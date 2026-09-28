@@ -32,16 +32,21 @@ jobs:
         run: gradle :app:assembleDebug
 
       - name: Rename APK
-        run: cp app/build/outputs/apk/debug/app-debug.apk bloxorz-mobile-v0.1.0.apk
+        run: cp app/build/outputs/apk/debug/app-debug.apk bloxorz-mobile-v0.1.1.apk
 
       - uses: actions/upload-artifact@v4
         with:
-          name: bloxorz-mobile-debug-apk
-          path: bloxorz-mobile-v0.1.0.apk
+          name: bloxorz-mobile-v0.1.1
+          path: bloxorz-mobile-v0.1.1.apk
           if-no-files-found: error
 
       - name: Publish GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release view v0.1.0 >/dev/null 2>&1 &&             gh release upload v0.1.0 bloxorz-mobile-v0.1.0.apk --clobber ||             gh release create v0.1.0 bloxorz-mobile-v0.1.0.apk               --target "${{ github.sha }}"               --title "Bloxorz Mobile v0.1.0"               --notes "Android wrapper for bloxorz.io with native touch controls, local reverse proxy, and persistent WebView storage."
+          gh release view v0.1.1 >/dev/null 2>&1 && \
+            gh release upload v0.1.1 bloxorz-mobile-v0.1.1.apk --clobber || \
+            gh release create v0.1.1 bloxorz-mobile-v0.1.1.apk \
+              --target "${{ github.sha }}" \
+              --title "Bloxorz Mobile v0.1.1" \
+              --notes "Fix game loading by using the native HTTPS WebView path directly. Touch controls are now translucent; short tap sends a key, long-press for 450 ms drags the D-pad or SPACE control. Control positions persist across app restarts."
